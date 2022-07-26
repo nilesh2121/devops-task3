@@ -14,26 +14,22 @@ resource "aws_instance" "webserver" {
 
     user_data = file("script/user.sh")
 
-    # connection {
-    #   type        = "ssh"
-    #   host        = aws_instance.webserver.public_ip
-    #   user        = "ubuntu"
-    #   private_key = tls_private_key.rsa.private_key_pem
-    #   timeout     = "4m"
-    # }
+    connection {
+      type        = "ssh"
+      host        = aws_instance.webserver.public_ip
+      user        = "ubuntu"
+      private_key = "/home/ubuntu/.ssh/id_rsa"
+      timeout     = "4m"
+    }
     
-    # provisioner "remote-exec" {
-    #   inline = [
-    #     # /bin/bash
-    #     "sudo apt update",
-    #     "sudo apt install software-properties-common",
-    #     "sudo add-apt-repository --yes --update ppa:ansible/ansible",
-    #     "sudo apt install ansible -y"
-        
-        
-    #   ]
+    provisioner "local-exec" {
+      command = "ssh-copy-id -i .ssh/id_dsa.pub -o StrictHostKeyChecking=no aws_instance.webserver.public_ip"
 
-    # }
+        
+        
+
+
+    }
 
     # provisioner "file" {
     #   source = "/var/lib/jenkins/workspace/devops_task1/"

@@ -23,7 +23,8 @@ resource "aws_instance" "webserver" {
     }
     
     provisioner "local-exec" {
-      command = "sudo ssh-copy-id -i .ssh/id_rsa.pub -o StrictHostKeyChecking=no devops@${aws_instance.webserver.private_ip}"
+      command = "sudo ssh-copy-id -i /home/devops/.ssh/id_rsa.pub ${aws_instance.webserver.private_ip}"
+      # command = "sudo ssh-copy-id -i /home/devops/.ssh/id_rsa.pub -o StrictHostKeyChecking=no devops@${aws_instance.webserver.private_ip}"
     
 
         

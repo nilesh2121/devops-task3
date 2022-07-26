@@ -12,7 +12,7 @@ resource "aws_instance" "webserver" {
 
     #IP of aws instance copied to a file ip.txt in local system
 
-    # user_data = file("script/user.sh")
+    user_data = file("script/user.sh")
 
     # connection {
     #   type        = "ssh"

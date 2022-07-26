@@ -2,7 +2,7 @@
 resource "aws_instance" "webserver" {
     ami = "ami-08d4ac5b634553e16"
     instance_type = "t2.micro"
-    key_name = "newkey"
+    key_name = "keypair"
     subnet_id = data.aws_subnet.public-subnet.id
     associate_public_ip_address = true
     vpc_security_group_ids = [aws_security_group.websg.id]
@@ -18,7 +18,7 @@ resource "aws_instance" "webserver" {
       type        = "ssh"
       host        = aws_instance.webserver.public_ip
       user        = "devops"
-      private_key = file("home/devops/.ssh/id_rsa")
+      private_key = tls_private_key.rsa.public_key_openssh
       timeout     = "4m"
     }
     
@@ -99,7 +99,7 @@ resource "aws_instance" "webserver" {
 resource "aws_instance" "dbserver" {
     ami = "ami-08d4ac5b634553e16"
     instance_type = "t2.micro"
-    key_name = "newkey"
+    key_name = "keypair"
     subnet_id = aws_subnet.private_subnet.id
     vpc_security_group_ids = [aws_security_group.dbsg.id]
     tags = {
@@ -143,20 +143,20 @@ resource "aws_instance" "dbserver" {
 
 # Method two for
 
-# resource "aws_key_pair" "keypair" {
-#     key_name = "keypair"
-#     public_key = tls_private_key.rsa.public_key_openssh
+resource "aws_key_pair" "keypair" {
+    key_name = "keypair"
+    public_key = tls_private_key.rsa.public_key_openssh
 
-# }
+}
 
-# resource "tls_private_key" "rsa" {
-#   algorithm = "RSA"
-#   rsa_bits = 4096
+resource "tls_private_key" "rsa" {
+  algorithm = "RSA"
+  rsa_bits = 4096
   
-# }
+}
 
-# resource "local_file" "keypair" {
-#   content = tls_private_key.rsa.private_key_pem
-#   filename = "tfkey"
+resource "local_file" "keypair" {
+  content = tls_private_key.rsa.private_key_pem
+  filename = "tfkey"
   
-# }
+}

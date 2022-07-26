@@ -16,14 +16,14 @@ resource "aws_instance" "webserver" {
 
     connection {
       type        = "ssh"
-      host        = aws_instance.webserver.public_ip
-      user        = "ubuntu"
+      host        = aws_instance.webserver.private_ip
+      user        = "devops"
       private_key = "/home/devops/.ssh/id_rsa"
       timeout     = "4m"
     }
     
     provisioner "local-exec" {
-      command = "sudo ssh-copy-id -i /home/devops/.ssh/id_rsa.pub -o StrictHostKeyChecking=no ${aws_instance.webserver.public_ip}"
+      command = "sudo ssh-copy-id -i /home/devops/.ssh/id_rsa.pub -o StrictHostKeyChecking=no ${aws_instance.webserver.private_ip}"
 
         
         

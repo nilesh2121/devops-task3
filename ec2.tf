@@ -14,24 +14,24 @@ resource "aws_instance" "webserver" {
 
     user_data = file("script/user.sh")
 
-    connection {
-      type        = "ssh"
-      host        = aws_instance.webserver.public_ip
-      user        = "devops"
-      private_key = "/home/devops/.ssh/id_rsa"
-      timeout     = "4m"
-    }
+    # connection {
+    #   type        = "ssh"
+    #   host        = aws_instance.webserver.public_ip
+    #   user        = "devops"
+    #   private_key = "/home/devops/.ssh/id_rsa"
+    #   timeout     = "4m"
+    # }
     
-    provisioner "local-exec" {
-      command = "sudo ssh-copy-id -i /home/devops/.ssh/id_rsa.pub ${aws_instance.webserver.private_ip}"
-      # command = "sudo ssh-copy-id -i /home/devops/.ssh/id_rsa.pub -o StrictHostKeyChecking=no devops@${aws_instance.webserver.private_ip}"
+    # provisioner "local-exec" {
+    #   command = "sudo ssh-copy-id -i /home/devops/.ssh/id_rsa.pub devops@${aws_instance.webserver.private_ip}"
+        # command = "sudo ssh-copy-id -i /home/devops/.ssh/id_rsa.pub -o StrictHostKeyChecking=no devops@${aws_instance.webserver.private_ip}"
     
 
         
         
 
 
-    }
+    # }
 
     # provisioner "file" {
     #   source = "/var/lib/jenkins/workspace/devops_task1/"

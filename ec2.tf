@@ -18,7 +18,7 @@ resource "aws_instance" "webserver" {
       type        = "ssh"
       host        = aws_instance.webserver.public_ip
       user        = "devops"
-      private_key = file("/home/devops/.ssh/id_rsa")
+      private_key = file("home/devops/.ssh/id_rsa")
       timeout     = "4m"
     }
     

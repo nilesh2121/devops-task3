@@ -14,78 +14,72 @@ resource "aws_instance" "webserver" {
 
     # user_data = file("script/user.sh")
 
-    connection {
-      type        = "ssh"
-      host        = aws_instance.webserver.public_ip
-      user        = "ubuntu"
-      private_key = tls_private_key.rsa.private_key_pem
-      timeout     = "4m"
-    }
+    # connection {
+    #   type        = "ssh"
+    #   host        = aws_instance.webserver.public_ip
+    #   user        = "ubuntu"
+    #   private_key = tls_private_key.rsa.private_key_pem
+    #   timeout     = "4m"
+    # }
     
-    provisioner "remote-exec" {
-      inline = [
-        # /bin/bash
-        "sudo apt update",
-        "sudo apt install software-properties-common",
-        "sudo add-apt-repository --yes --update ppa:ansible/ansible",
-        "sudo apt install ansible -y"
+    # provisioner "remote-exec" {
+    #   inline = [
+    #     # /bin/bash
+    #     "sudo apt update",
+    #     "sudo apt install software-properties-common",
+    #     "sudo add-apt-repository --yes --update ppa:ansible/ansible",
+    #     "sudo apt install ansible -y"
         
         
-      ]
+    #   ]
 
-    }
+    # }
 
-    provisioner "file" {
-      source = "/var/lib/jenkins/workspace/devops_task1/"
-      destination = "/home/ubuntu/"
+    # provisioner "file" {
+    #   source = "/var/lib/jenkins/workspace/devops_task1/"
+    #   destination = "/home/ubuntu/"
 
-      connection {
-        type = "ssh"
-        user = "ubuntu"
-        private_key = tls_private_key.rsa.private_key_pem
-        host = aws_instance.webserver.public_ip
+    #   connection {
+    #     type = "ssh"
+    #     user = "ubuntu"
+    #     private_key = tls_private_key.rsa.private_key_pem
+    #     host = aws_instance.webserver.public_ip
         
-      }
+    #   }
       
-    }
-
-  
+    # }
 
 
-    provisioner "remote-exec" {
-      inline = ["echo 'Wait until SSH is ready'"]
 
-      connection {
-        type = "ssh"
-        user = "ubuntu"
-        private_key = tls_private_key.rsa.private_key_pem
-        host = aws_instance.webserver.public_ip
+    # provisioner "remote-exec" {
+    #   inline = ["echo 'Wait until SSH is ready'"]
+
+    #   connection {
+    #     type = "ssh"
+    #     user = "ubuntu"
+    #     private_key = tls_private_key.rsa.private_key_pem
+    #     host = aws_instance.webserver.public_ip
  
-      }
+    #   }
       
           
-    }
+    # }
 
-    provisioner "local-exec" {
-      command = "ansible-playbook -i ${aws_instance.webserver.public_ip}, --private-key ${tls_private_key.rsa.private_key_pem} apache.yml"
+    # provisioner "local-exec" {
+    #   command = "ansible-playbook -i ${aws_instance.webserver.public_ip}, --private-key ${tls_private_key.rsa.private_key_pem} apache.yml"
       
-      connection {
-        type = "ssh"
-        user = "ubuntu"
-        private_key = tls_private_key.rsa.private_key_pem
-        host = aws_instance.webserver.public_ip
-      }
+    #   connection {
+    #     type = "ssh"
+    #     user = "ubuntu"
+    #     private_key = tls_private_key.rsa.private_key_pem
+    #     host = aws_instance.webserver.public_ip
+    #   }
 
 
 
-      }
+    #   }
 
     
-
-   
-
-
-   
   }
 
 
